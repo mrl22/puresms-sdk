@@ -1,0 +1,42 @@
+{
+    "name": "mrl22/puresms-sdk",
+    "description": "An unofficial, dependency-free PHP client for the PureSMS API.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "puresms",
+        "sms",
+        "php",
+        "api"
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PureSms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PureSms\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "find src tests -name '*.php' -print0 | xargs -0 -n1 php -l"
+    },
+    "support": {
+        "issues": "https://github.com/mrl22/puresms-sdk/issues",
+        "source": "https://github.com/mrl22/puresms-sdk"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

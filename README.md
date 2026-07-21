@@ -17,13 +17,27 @@ An unofficial, dependency-free PHP 8.1+ client for the [PureSMS API](https://pur
 
 ## Installation
 
-After the package has been registered on Packagist:
+### Composer
 
 ```sh
 composer require mrl22/puresms-sdk
 ```
 
-Until then, install from the public GitHub repository with a Composer VCS repository definition. See [the release guide](docs/RELEASING.md).
+### Without Composer
+
+Download the release you want from the [GitHub tags page](https://github.com/mrl22/puresms-sdk/tags), then copy `src/PureSms.php` into your project. The SDK has no Composer runtime dependencies, so include that file directly:
+
+```php
+<?php
+
+require_once __DIR__ . '/lib/PureSms.php';
+
+use PureSms\PureSms;
+
+$sms = new PureSms('your-api-key', 'YourSender');
+```
+
+Keep the file under your application’s normal source control and replace it deliberately when upgrading; do not download PHP source at runtime. PHP 8.1+ and `ext-curl` are still required.
 
 Create a PureSMS workspace, sender, and API key in the PureSMS dashboard before sending messages. Test mode currently has provider-specific restrictions; consult the [official developer documentation](https://the.divergent.guide/puresms/developers/).
 

@@ -1,6 +1,10 @@
 # PureSMS PHP API
 
-[![CI](https://github.com/mrl22/puresms-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/mrl22/puresms-sdk/actions/workflows/ci.yml)
+[![PHP 8.1](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.1.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.1.yml)
+[![PHP 8.2](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.2.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.2.yml)
+[![PHP 8.3](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.3.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.3.yml)
+[![PHP 8.4](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.4.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.4.yml)
+[![PHP 8.5](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.5.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.5.yml)
 
 An unofficial, dependency-free PHP 8.1+ client for the [PureSMS API](https://puresms.uk/Developers). It provides synchronous single and batch sending, scheduled-message cancellation, and webhook HMAC verification.
 

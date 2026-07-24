@@ -237,6 +237,69 @@ final class PureSms
     }
 
     /**
+     * Convert a phone number to E.164 format.
+     *
+     * UK country code 44 is used for numbers without an international prefix.
+     * Pass another country calling code when normalising a national number from
+     * elsewhere. Numbers prefixed with + or 00 retain their country calling
+     * code. Spaces, hyphens, parentheses, and full stops are ignored.
+     *
+     * @param string|int $number      A phone number in national or international form.
+     * @param string|int $countryCode Country calling code for national numbers; defaults to 44.
+     */
+    public static function toE164(string|int $number, string|int $countryCode = '44'): string
+    {
+        $normalisedCountryCode = self::normaliseCountryCallingCode($countryCode);
+        $value = trim((string) $number);
+
+        if ($value === '') {
+            throw new InvalidArgumentException('Phone number must not be empty.');
+        }
+
+        if (preg_match('/^\\+?[0-9 .()\\-]+$/', $value) !== 1) {
+            throw new InvalidArgumentException('Phone number must contain only digits and common phone-number separators.');
+        }
+
+        $hasInternationalPrefix = $value[0] === '+' || str_starts_with($value, '00');
+        $digits = preg_replace('/[^0-9]/', '', $value);
+        if ($digits === null || $digits === '') {
+            throw new InvalidArgumentException('Phone number must contain at least one digit.');
+        }
+
+        if (str_starts_with($digits, '00')) {
+            $digits = substr($digits, 2);
+        }
+
+        if (str_starts_with($digits, $normalisedCountryCode)) {
+            $subscriberNumber = substr($digits, strlen($normalisedCountryCode));
+            if (str_starts_with($subscriberNumber, '0')) {
+                $subscriberNumber = substr($subscriberNumber, 1);
+            }
+
+            if ($subscriberNumber === '') {
+                throw new InvalidArgumentException('Phone number must include digits after the country calling code.');
+            }
+
+            $normalisedNumber = '+' . $normalisedCountryCode . $subscriberNumber;
+        } elseif ($hasInternationalPrefix) {
+            $normalisedNumber = '+' . $digits;
+        } else {
+            $subscriberNumber = str_starts_with($digits, '0') ? substr($digits, 1) : $digits;
+            if ($subscriberNumber === '') {
+                throw new InvalidArgumentException('Phone number must include digits after the national prefix.');
+            }
+
+            $normalisedNumber = '+' . $normalisedCountryCode . $subscriberNumber;
+        }
+
+        if (preg_match('/^\\+[1-9][0-9]{1,14}$/', $normalisedNumber) !== 1) {
+            throw new InvalidArgumentException('Phone number must be a valid-length E.164 number.');
+        }
+
+        return $normalisedNumber;
+    }
+
+    /**
      * @param array<string, mixed>|null $payload
      *
      * @return array<string, mixed>
@@ -374,6 +437,16 @@ final class PureSms
         }
 
         return $value;
+    }
+
+    private static function normaliseCountryCallingCode(string|int $countryCode): string
+    {
+        $value = trim((string) $countryCode);
+        if (preg_match('/^\\+?[1-9][0-9]{0,2}$/', $value) !== 1) {
+            throw new InvalidArgumentException('Country calling code must contain one to three digits and may begin with +.');
+        }
+
+        return ltrim($value, '+');
     }
 
     private static function requireStringOption(mixed $value, string $name): string

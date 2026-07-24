@@ -255,6 +255,43 @@ final class FixtureServerTest extends TestCase
         self::assertFalse(PureSms::verifyWebhookSignature($payload, $signature . 'x', $timestamp, $secret));
     }
 
+    public function testItNormalisesUkPhoneNumbersToE164(): void
+    {
+        self::assertSame('+447590123456', PureSms::toE164('07590123456'));
+        self::assertSame('+447590123456', PureSms::toE164('447590123456'));
+        self::assertSame('+447590123456', PureSms::toE164('4407590123456'));
+        self::assertSame('+447590123456', PureSms::toE164('+44 (0)7590 123456'));
+        self::assertSame('+447590123456', PureSms::toE164('0044 7590-123456'));
+        self::assertSame('+447590123456', PureSms::toE164(7590123456));
+    }
+
+    public function testItNormalisesInternationalNumbersAndSupportsAnotherNationalCountryCode(): void
+    {
+        self::assertSame('+14155550123', PureSms::toE164('+1 (415) 555-0123'));
+        self::assertSame('+14155550123', PureSms::toE164('415 555 0123', 1));
+    }
+
+    public function testItRejectsInvalidE164PhoneNumberInput(): void
+    {
+        try {
+            PureSms::toE164('not a number');
+            self::fail('Expected invalid phone number error.');
+        } catch (InvalidArgumentException $exception) {
+            self::assertStringContainsString('Phone number', $exception->getMessage());
+        }
+
+        try {
+            PureSms::toE164('07590123456', '0');
+            self::fail('Expected invalid country calling code error.');
+        } catch (InvalidArgumentException $exception) {
+            self::assertStringContainsString('Country calling code', $exception->getMessage());
+        }
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('valid-length E.164');
+        PureSms::toE164('+01');
+    }
+
     /** @return array{method: string, path: string, headers: array<string, string>, json: array<string, mixed>|null} */
     private function lastRequest(): array
     {

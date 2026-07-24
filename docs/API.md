@@ -13,6 +13,22 @@ new PureSms\PureSms(
 
 Every request uses `X-Api-Key` and `Accept: application/json`. POST requests also use `Content-Type: application/json`.
 
+## `toE164()`
+
+```php
+PureSms::toE164(string|int $number, string|int $countryCode = '44'): string
+```
+
+Formats a phone number without making an API request. The default country calling code is `44`, which makes these UK input forms equivalent:
+
+```php
+PureSms::toE164('07590123456');   // +447590123456
+PureSms::toE164('447590123456');  // +447590123456
+PureSms::toE164('4407590123456'); // +447590123456
+```
+
+For national numbers, pass the appropriate country calling code as the second argument. Inputs with a leading `+` or `00` retain their international calling code. The helper accepts spaces, hyphens, parentheses, and full stops as formatting separators, rejects invalid E.164 lengths, and does not validate that a number is assigned or reachable.
+
 ## `send()`
 
 ```php

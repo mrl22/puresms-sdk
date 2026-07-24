@@ -62,6 +62,24 @@ echo $result['id'];
 
 Recipient numbers should be supplied in E.164 form. The client verifies required non-empty fields and option types; PureSMS remains the authority for sender approval, destination, message-content, and other provider validation.
 
+## Normalising phone numbers
+
+`PureSms::toE164()` converts a phone number to E.164 form without making an API request. It defaults to the UK calling code (`44`), so common UK forms all produce the same result:
+
+```php
+$recipient = PureSms::toE164('07590123456');     // +447590123456
+PureSms::toE164('447590123456');                 // +447590123456
+PureSms::toE164('4407590123456');                // +447590123456
+```
+
+It accepts strings or integers and ignores spaces, hyphens, parentheses, and full stops. International `+` and `00` prefixes are recognised; the optional second argument supplies the country calling code for national numbers outside the UK:
+
+```php
+PureSms::toE164('415 555 0123', 1); // +14155550123
+```
+
+The helper formats numbers but cannot determine whether a number is active or valid for a particular national numbering plan.
+
 ## Sending SMS
 
 ```php

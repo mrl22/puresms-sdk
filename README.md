@@ -1,4 +1,4 @@
-# PureSMS PHP API
+# PureSMS PHP SDK
 
 [![PHP 8.1](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.1.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.1.yml)
 [![PHP 8.2](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.2.yml/badge.svg?branch=master)](https://github.com/mrl22/puresms-sdk/actions/workflows/php-8.2.yml)

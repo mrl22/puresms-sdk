@@ -263,12 +263,14 @@ final class FixtureServerTest extends TestCase
         self::assertSame('+447590123456', PureSms::toE164('+44 (0)7590 123456'));
         self::assertSame('+447590123456', PureSms::toE164('0044 7590-123456'));
         self::assertSame('+447590123456', PureSms::toE164(7590123456));
+        self::assertSame('+447590123456', PureSms::formatNumber('07590123456'));
     }
 
     public function testItNormalisesInternationalNumbersAndSupportsAnotherNationalCountryCode(): void
     {
         self::assertSame('+14155550123', PureSms::toE164('+1 (415) 555-0123'));
         self::assertSame('+14155550123', PureSms::toE164('415 555 0123', 1));
+        self::assertSame('+14155550123', PureSms::formatNumber('415 555 0123', 1));
     }
 
     public function testItRejectsInvalidE164PhoneNumberInput(): void

@@ -300,6 +300,19 @@ final class PureSms
     }
 
     /**
+     * Format a phone number as E.164.
+     *
+     * This is an alias of toE164().
+     *
+     * @param string|int $number      A phone number in national or international form.
+     * @param string|int $countryCode Country calling code for national numbers; defaults to 44.
+     */
+    public static function formatNumber(string|int $number, string|int $countryCode = '44'): string
+    {
+        return self::toE164($number, $countryCode);
+    }
+
+    /**
      * @param array<string, mixed>|null $payload
      *
      * @return array<string, mixed>
